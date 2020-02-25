@@ -1,12 +1,10 @@
-package com.psych.game;
+package com.psych.game.controller;
 
-import com.psych.game.model.Game;
-import com.psych.game.model.GameMode;
-import com.psych.game.model.Player;
-import com.psych.game.model.Question;
+import com.psych.game.model.*;
 import com.psych.game.repositories.GameRepository;
 import com.psych.game.repositories.PlayerRepository;
 import com.psych.game.repositories.QuestionRepository;
+import com.psych.game.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,13 +15,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dev-test")
-public class HelloWorldController {
+public class DevTestController {
     @Autowired
     private PlayerRepository playerRepository;
     @Autowired
     private QuestionRepository questionRepository;
     @Autowired
     private GameRepository gameRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/")
     public String hello() {
@@ -32,6 +32,11 @@ public class HelloWorldController {
 
     @GetMapping("/populate")
     public String populateDB() {
+        for(Player player: playerRepository.findAll()) {
+            player.getGames().clear();
+            playerRepository.save(player);
+        }
+
         gameRepository.deleteAll();
         playerRepository.deleteAll();
         questionRepository.deleteAll();
@@ -96,5 +101,13 @@ public class HelloWorldController {
     @GetMapping("game/{id}")
     public Game getGameById(@PathVariable(name = "id") Long id) {
         return gameRepository.findById(id).orElseThrow();
+    }
+
+    @GetMapping("/users")
+    public List<User> getAllUsers() { return userRepository.findAll(); }
+
+    @GetMapping("user/{id}")
+    public User getUserById(@PathVariable(name = "id") Long id) {
+        return userRepository.findById(id).orElseThrow();
     }
 }
