@@ -45,6 +45,11 @@ public class Player extends User {
     public Player() {
     }
 
+    public Game getCurrentGame() {
+        return null;
+        //todo
+    }
+
     private Player(Builder builder) {
         setEmail(builder.email);
         setSaltedHashedPassword(builder.saltedHashedPassword);

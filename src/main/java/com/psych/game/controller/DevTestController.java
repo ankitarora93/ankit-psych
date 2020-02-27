@@ -1,10 +1,7 @@
 package com.psych.game.controller;
 
 import com.psych.game.model.*;
-import com.psych.game.repositories.GameRepository;
-import com.psych.game.repositories.PlayerRepository;
-import com.psych.game.repositories.QuestionRepository;
-import com.psych.game.repositories.UserRepository;
+import com.psych.game.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +21,10 @@ public class DevTestController {
     private GameRepository gameRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoundRepository roundRepository;
+    @Autowired
+    private AdminRepository adminRepository;
 
     @GetMapping("/")
     public String hello() {
@@ -110,4 +111,16 @@ public class DevTestController {
     public User getUserById(@PathVariable(name = "id") Long id) {
         return userRepository.findById(id).orElseThrow();
     }
+
+    @GetMapping("/rounds")
+    public List<Round> getAllRounds() { return roundRepository.findAll(); }
+
+    @GetMapping("/round/{id}")
+    public Round getRoundById(@PathVariable(name = "id") Long id) { return roundRepository.findById(id).orElseThrow(); }
+
+    @GetMapping("/admins")
+    public List<Admin> getAllAdmins() { return adminRepository.findAll(); }
+
+    @GetMapping("/admin/{id}")
+    public Admin getAdminById(@PathVariable(name = "id") Long id) { return adminRepository.findById(id).orElseThrow(); }
 }
